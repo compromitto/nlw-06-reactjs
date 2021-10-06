@@ -4,6 +4,7 @@ import { FormEvent, useState } from 'react';
 import illustrationImg from '../assets/images/illustration.svg'
 import logoImg from '../assets/images/logo.svg';
 import googleIconImg from '../assets/images/google-icon.svg';
+import facebookIconImg from '../assets/images/facebook-icon.svg';
 
 import { database } from '../services/firebase';
 
@@ -51,15 +52,19 @@ export function Home() {
     <div id="page-auth">
       <aside>
         <img src={illustrationImg} alt="Ilustração simbolizando perguntas e respostas" />
-        <strong>Crie salas de Q&amp;A ao-vivo</strong>
-        <p>Tire as dúvidas da sua audiência em tempo-real</p>
+        <strong>Crie PIX com QR-Code</strong>
+        <p>Crie em tempo-real o QR-CODE para seus pagamentos via PIX</p>
       </aside>
       <main>
         <div className="main-content">
-          <img src={logoImg} alt="Letmeask" />
+          <img src={logoImg} alt="Gera pix" />
           <button onClick={handleCreateRoom} className="create-room">
             <img src={googleIconImg} alt="Logo do Google" />
-            Crie sua sala com o Google
+            Crie sua conta com o Google
+          </button>
+          <button onClick={handleCreateRoom} className="create-room-fb">
+            <img src={facebookIconImg} alt="Logo Facebook" />
+            Crie sua conta com o facebook
           </button>
           <div className="separator">ou entre em uma sala</div>
           <form onSubmit={handleJoinRoom}>
