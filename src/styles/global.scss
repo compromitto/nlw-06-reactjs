@@ -9,6 +9,14 @@ body {
   color: #29292e;
 }
 
-body, input, button, textarea {
+body, input, button, textarea label{
   font: 400 16px 'Roboto', sans-serif;
+}
+label {
+  font:400 14px 'Roboto', sans-serif;
+  font: italic;
+  text-align: left;
+  display: block;
+  color: #a8a8b3;
+  margin-top: 10px;
 }

@@ -8,6 +8,8 @@ import { Button } from '../components/Button';
 import { database } from '../services/firebase';
 import { useAuth } from '../hooks/useAuth';
 
+
+
 import '../styles/auth.scss';
 
 export function NewRoom() {
@@ -15,7 +17,10 @@ export function NewRoom() {
   const history = useHistory()
   const [newRoom, setNewRoom] = useState('');
 
-  async function handleCreateRoom(event: FormEvent) {
+
+ 
+  
+  async function handleCreateRoom(event: FormEvent): Promise<void> {
     event.preventDefault();
 
     if (newRoom.trim() === '') {
@@ -38,10 +43,11 @@ export function NewRoom() {
         <img src={illustrationImg} alt="Ilustração simbolizando perguntas e respostas" />
         <strong>Crie salas de Q&amp;A ao-vivo</strong>
         <p>Tire as dúvidas da sua audiência em tempo-real</p>
-      </aside>
+        <p> Liste suas salas <Link to="/">clique aqui</Link></p>
+        </aside>
       <main>
         <div className="main-content">
-          <img src={logoImg} alt="Letmeask" />
+          <img src={logoImg} alt="Gera PIX" />
           <h2>Criar uma nova sala</h2>
           <form onSubmit={handleCreateRoom}>
             <input 
@@ -54,8 +60,8 @@ export function NewRoom() {
               Criar sala
             </Button>
           </form>
-          <p>
-            Quer entrar em uma sala existente? <Link to="/">clique aqui</Link>
+
+          <p>Quer entrar em uma sala existente? <Link to="/">clique aqui</Link>
           </p>
         </div>
       </main>

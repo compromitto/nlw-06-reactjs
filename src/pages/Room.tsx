@@ -1,12 +1,13 @@
-import { FormEvent, useState } from 'react';
-import { useParams } from 'react-router-dom'
+import firebase from 'firebase';
+import { FormEvent, useState} from 'react';
+import { useParams, useHistory } from 'react-router-dom'
 
 import logoImg from '../assets/images/logo.svg';
 
 import { Button } from '../components/Button';
 import { Question } from '../components/Question';
 import { RoomCode } from '../components/RoomCode';
-import { useAuth } from '../hooks/useAuth';
+import { useAuth} from '../hooks/useAuth';
 import { useRoom } from '../hooks/useRoom';
 import { database } from '../services/firebase';
 
@@ -18,13 +19,14 @@ type RoomParams = {
 }
 
 export function Room() {
-  const { user } = useAuth();
+  const history = useHistory();
+  const { user,signInWithGoogle} = useAuth();
   const params = useParams<RoomParams>();
   const [newQuestion, setNewQuestion] = useState('');
   const roomId = params.id;
 
   const { title, questions } = useRoom(roomId)
-
+ 
   async function handleSendQuestion(event: FormEvent) {
     event.preventDefault();
 
@@ -60,13 +62,45 @@ export function Room() {
       })
     }
   }
+  async function handleCreateRoom() {
+    if (!user) {
+      await signInWithGoogle()
+    }
 
+  }
+  //logout sistema 
+
+  function Logout() {
+    firebase.auth().signOut().then(() => {
+      history.push('/');
+    }).catch((error) => {
+      // An error happened.
+    });
+ 
+  }
+
+  //layout 
+ 
   return (
     <div id="page-room">
       <header>
         <div className="content">
-          <img src={logoImg} alt="Letmeask" />
+        <a href="/">
+  <img src={logoImg} alt="Home" />
+</a>
+          
           <RoomCode code={roomId} />
+          <div className="user-info-header">
+            { user ? (
+              <div>
+                <img src={user.avatar} alt={user.name}/>
+              </div>
+            ) : (
+              <span><Button onClick={handleCreateRoom}>faça seu login</Button></span>
+            ) }
+            <Button type="submit" disabled={!user} onClick={Logout} >Sair</Button>
+          </div>
+          
         </div>
       </header>
 
@@ -90,7 +124,7 @@ export function Room() {
                 <span>{user.name}</span>
               </div>
             ) : (
-              <span>Para enviar uma pergunta, <button>faça seu login</button>.</span>
+              <span>Para enviar uma pergunta, <button onClick={handleCreateRoom}>faça seu login</button>.</span>
             ) }
             <Button type="submit" disabled={!user}>Enviar pergunta</Button>
           </div>
@@ -110,7 +144,7 @@ export function Room() {
                   <button
                     className={`like-button ${question.likeId ? 'liked' : ''}`}
                     type="button"
-                    aria-label="Marcar como gostei"
+                    aria-label="Marcar como gostei" disabled={!user} 
                     onClick={() => handleLikeQuestion(question.id, question.likeId)}
                   >
                     { question.likeCount > 0 && <span>{question.likeCount}</span> }
